@@ -4,6 +4,7 @@ import { catalogMessage, loadingGrid, initDialogs, notify, openDialog } from './
 import { addToCart, removeFromCart, updateQuantity, cartCount, MAX_QUANTITY } from './cart.js';
 import { renderCart } from './cart-view.js';
 import { renderCheckout, clearCheckoutForm } from './checkout-view.js';
+import { validateCheckout } from './checkout.js';
 import { loadCart, saveCart, reconcileCart } from './cart-storage.js';
 import { showProductDetails } from './details.js';
 import { createStore, visibleProducts } from './state.js';
@@ -22,7 +23,20 @@ const cartHandlers = {
   onQuantity: (id, quantity) => { store.setState({ cart: updateQuantity(store.getState().cart, id, quantity) }); notify(quantity ? 'Bag quantity updated.' : 'Item removed from your bag.'); },
 };
 document.querySelector('#checkout-dialog').addEventListener('close', clearCheckoutForm);
-document.querySelector('#checkout-form').addEventListener('submit', event => event.preventDefault());
+document.querySelector('#checkout-form').addEventListener('submit', event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const fields = Object.fromEntries(new FormData(form));
+  const errors = validateCheckout(fields);
+  for (const key of ['name', 'email', 'address']) {
+    document.querySelector(`#${key}-error`).textContent = errors[key] || '';
+    form.elements.namedItem(key).setAttribute('aria-invalid', String(Boolean(errors[key])));
+  }
+  if (Object.keys(errors).length) {
+    form.elements.namedItem(Object.keys(errors)[0]).focus();
+    return;
+  }
+});
 document.querySelector('#open-cart').addEventListener('click', () => {
   renderCart(store.getState(), cartHandlers);
   openDialog(document.querySelector('#cart-dialog'));
