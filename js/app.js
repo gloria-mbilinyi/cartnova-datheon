@@ -2,10 +2,13 @@ import { fetchProducts } from './api.js';
 import { renderProducts } from './catalog.js';
 import { catalogMessage, loadingGrid, initDialogs, notify } from './ui.js';
 import { addToCart, cartCount, MAX_QUANTITY } from './cart.js';
+import { loadCart, saveCart, reconcileCart } from './cart-storage.js';
 import { showProductDetails } from './details.js';
 import { createStore, visibleProducts } from './state.js';
 
-const store = createStore();
+const savedCart = loadCart();
+const store = createStore({ cart: savedCart.items, storageWarning: savedCart.warning });
+document.querySelector('#cart-count').textContent = cartCount(savedCart.items);
 let activeRequest;
 initDialogs();
 function addProduct(id) {
@@ -21,7 +24,11 @@ export function renderCatalog() {
   renderProducts(visibleProducts(state), { onAdd: addProduct, onDetails: id => showProductDetails(state.products.find(product => product.id === id), addProduct) });
 }
 store.subscribe((next, previous) => {
-  if (next.cart !== previous.cart) document.querySelector('#cart-count').textContent = cartCount(next.cart);
+  if (next.cart !== previous.cart) {
+    document.querySelector('#cart-count').textContent = cartCount(next.cart);
+    const warning = saveCart(next.cart);
+    if (warning) store.setState({ storageWarning: warning });
+  }
   if (['products', 'status', 'query', 'category', 'sort'].some(key => next[key] !== previous[key])) renderCatalog();
 });
 document.querySelector('#sort').addEventListener('change', event => store.setState({ sort: event.target.value }));
@@ -50,7 +57,10 @@ export async function loadCatalog() {
   try {
     const products = await fetchProducts({ signal: request.signal });
     if (request.signal.aborted) return;
-    store.setState({ products, status: 'ready' });
+    const previousCart = store.getState().cart;
+    const cart = reconcileCart(previousCart, products);
+    const missingWarning = cart.length < previousCart.length ? 'Unavailable products were removed from your saved bag.' : store.getState().storageWarning;
+    store.setState({ products, status: 'ready', cart, storageWarning: missingWarning });
   }
   catch (error) {
     if (request.signal.aborted) return;
