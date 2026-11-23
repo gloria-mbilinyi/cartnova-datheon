@@ -2,10 +2,18 @@ import { fetchProducts } from './api.js';
 import { renderProducts } from './catalog.js';
 import { catalogMessage, loadingGrid } from './ui.js';
 import { filterCategory } from './filters.js';
+import { searchProducts } from './search.js';
 
 let products = [];
 let category = 'all';
-export function renderCatalog() { renderProducts(filterCategory(products, category)); }
+let query = '';
+export function renderCatalog() { renderProducts(searchProducts(filterCategory(products, category), query)); }
+document.querySelector('#search').addEventListener('input', event => { query = event.target.value; renderCatalog(); });
+document.querySelector('#search-form').addEventListener('submit', event => {
+  event.preventDefault();
+  document.querySelector('#catalog').scrollIntoView({ block: 'start' });
+  document.querySelector('#catalog').focus({ preventScroll: true });
+});
 document.querySelectorAll('[data-category]').forEach(control => control.addEventListener('click', () => {
   category = control.dataset.category;
   document.querySelectorAll('[data-category]').forEach(item => item.setAttribute('aria-pressed', String(item.dataset.category === category)));
