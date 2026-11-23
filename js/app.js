@@ -4,7 +4,8 @@ import { catalogMessage, loadingGrid, initDialogs, notify, openDialog } from './
 import { addToCart, removeFromCart, updateQuantity, cartCount, MAX_QUANTITY } from './cart.js';
 import { renderCart } from './cart-view.js';
 import { renderCheckout, clearCheckoutForm } from './checkout-view.js';
-import { validateCheckout } from './checkout.js';
+import { validateCheckout, createDemoOrder } from './checkout.js';
+import { money } from './utils.js';
 import { loadCart, saveCart, reconcileCart } from './cart-storage.js';
 import { showProductDetails } from './details.js';
 import { createStore, visibleProducts } from './state.js';
@@ -35,6 +36,16 @@ document.querySelector('#checkout-form').addEventListener('submit', event => {
   if (Object.keys(errors).length) {
     form.elements.namedItem(Object.keys(errors)[0]).focus();
     return;
+  }
+  try {
+    const order = createDemoOrder({ fields, ...store.getState() });
+    document.querySelector('#order-reference').textContent = `Demo reference: ${order.reference}`;
+    document.querySelector('#order-total').textContent = `${order.quantity} item${order.quantity === 1 ? '' : 's'} · Simulated total ${money(order.total)}`;
+    store.setState({ cart: [] });
+    clearCheckoutForm();
+    openDialog(document.querySelector('#confirmation-dialog'));
+  } catch (error) {
+    document.querySelector('#checkout-error').textContent = error.message;
   }
 });
 document.querySelector('#open-cart').addEventListener('click', () => {
