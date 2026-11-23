@@ -7,6 +7,14 @@ export function openDialog(dialog) {
 }
 export function initDialogs() {
   document.querySelectorAll('dialog').forEach(dialog => {
+    dialog.addEventListener('keydown', event => {
+      if (event.key !== 'Tab') return;
+      const controls = [...dialog.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')].filter(node => node.getClientRects().length);
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    });
     dialog.querySelectorAll('[data-close]').forEach(control => control.addEventListener('click', () => dialog.close()));
     dialog.addEventListener('click', event => {
       if (event.target !== dialog) return;

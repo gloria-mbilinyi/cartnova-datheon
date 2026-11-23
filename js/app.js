@@ -14,7 +14,8 @@ import { createStore, visibleProducts } from './state.js';
 const savedCart = loadCart();
 const store = createStore({ cart: savedCart.items, storageWarning: savedCart.warning });
 document.querySelector('#cart-count').textContent = cartCount(savedCart.items);
-document.querySelector('#open-cart').setAttribute('aria-label', `Open shopping bag, ${cartCount(savedCart.items)} items`);
+document.querySelector('.cart-label').textContent = 'My bag ';
+document.querySelector('#open-cart .sr-only').textContent = ' items in cart';
 let activeRequest;
 initDialogs();
 initTheme();
@@ -87,7 +88,6 @@ store.subscribe((next, previous) => {
   }
   if (next.cart !== previous.cart) {
     document.querySelector('#cart-count').textContent = cartCount(next.cart);
-    document.querySelector('#open-cart').setAttribute('aria-label', `Open shopping bag, ${cartCount(next.cart)} items`);
     const warning = saveCart(next.cart);
     if (warning) store.setState({ storageWarning: warning });
   }

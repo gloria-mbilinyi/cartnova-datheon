@@ -4,12 +4,21 @@
   "private": true,
   "description": "CartNova — Datheon Internship Task 4",
   "type": "module",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "node scripts/server.mjs",
     "check": "node scripts/check.mjs",
     "test": "node --test tests/*.test.js",
+    "test:browser": "playwright test",
+    "test:all": "npm run check && npm test && npm run test:browser",
+    "test:live": "node scripts/api-connectivity.mjs",
     "build": "node scripts/build.mjs",
     "verify": "npm run check && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.65.1"
   }
 }
