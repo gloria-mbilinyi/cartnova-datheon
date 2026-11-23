@@ -1,0 +1,27 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, "Segoe UI", system-ui, sans-serif;
+  color: #17223b;
+  background: #f5f7fc;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --accent: #2155e8;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100svh; display: flex; flex-direction: column; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
+.skip-link { position: absolute; left: 1rem; top: -6rem; z-index: 1; padding: 1rem; background: white; }
+.skip-link:focus { top: 1rem; }
+.site-header, .site-footer { padding: 1.5rem clamp(1.25rem, 6vw, 6rem); }
+.site-header { border-bottom: 1px solid #dce2ee; }
+.brand { display: inline-flex; align-items: center; gap: .75rem; font-size: 1.3rem; font-weight: 750; text-decoration: none; }
+.brand img { border-radius: .75rem; }
+main { flex: 1; display: grid; align-items: center; padding: clamp(3rem, 10vw, 8rem) clamp(1.25rem, 6vw, 6rem); }
+.welcome { max-width: 62rem; }
+.eyebrow { color: var(--accent); font-size: 1rem; font-weight: 650; }
+h1 { margin: 1rem 0 1.5rem; font-size: clamp(2.5rem, 7vw, 6rem); line-height: 1.05; letter-spacing: -.045em; overflow-wrap: anywhere; }
+.intro { max-width: 35rem; color: #46546b; font-size: clamp(1.1rem, 2vw, 1.35rem); line-height: 1.6; }
+.site-footer { border-top: 1px solid #dce2ee; color: #46546b; font-size: .9rem; }
+.site-footer p { margin: 0; line-height: 1.6; }
