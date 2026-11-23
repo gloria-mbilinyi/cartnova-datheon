@@ -4,6 +4,7 @@
 @import url('./catalog.css');
 @import url('./dialogs.css');
 @import url('./cart.css');
+@import url('./checkout.css');
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; scroll-padding-top:1rem; }
 body { margin:0; background:var(--bg); color:var(--ink); line-height:1.5; }

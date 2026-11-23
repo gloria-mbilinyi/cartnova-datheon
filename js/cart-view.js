@@ -51,5 +51,8 @@ export function renderCart(state, handlers) {
     summary.append(totalsView(calculateTotal(state.cart, state.products)));
   }
   summary.append(el('p', 'form-note', state.status === 'ready' ? 'Demo totals use current FakeStoreAPI prices.' : 'Current prices are unavailable. Checkout is disabled until the catalog is verified.'));
+  const checkout = button('Continue to demo checkout', 'button primary full-width', handlers.onCheckout);
+  checkout.disabled = state.status !== 'ready';
+  summary.append(checkout);
   if (activeId && document.querySelector('#cart-dialog').open) (document.getElementById(activeId) || document.querySelector('#cart-dialog .close-button')).focus();
 }

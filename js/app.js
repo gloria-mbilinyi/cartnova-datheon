@@ -3,6 +3,7 @@ import { renderProducts } from './catalog.js';
 import { catalogMessage, loadingGrid, initDialogs, notify, openDialog } from './ui.js';
 import { addToCart, removeFromCart, updateQuantity, cartCount, MAX_QUANTITY } from './cart.js';
 import { renderCart } from './cart-view.js';
+import { renderCheckout, clearCheckoutForm } from './checkout-view.js';
 import { loadCart, saveCart, reconcileCart } from './cart-storage.js';
 import { showProductDetails } from './details.js';
 import { createStore, visibleProducts } from './state.js';
@@ -13,9 +14,15 @@ document.querySelector('#cart-count').textContent = cartCount(savedCart.items);
 let activeRequest;
 initDialogs();
 const cartHandlers = {
+  onCheckout: () => {
+    clearCheckoutForm();
+    if (renderCheckout(store.getState())) openDialog(document.querySelector('#checkout-dialog'));
+  },
   onRemove: id => { store.setState({ cart: removeFromCart(store.getState().cart, id) }); notify('Item removed from your bag.'); },
   onQuantity: (id, quantity) => { store.setState({ cart: updateQuantity(store.getState().cart, id, quantity) }); notify(quantity ? 'Bag quantity updated.' : 'Item removed from your bag.'); },
 };
+document.querySelector('#checkout-dialog').addEventListener('close', clearCheckoutForm);
+document.querySelector('#checkout-form').addEventListener('submit', event => event.preventDefault());
 document.querySelector('#open-cart').addEventListener('click', () => {
   renderCart(store.getState(), cartHandlers);
   openDialog(document.querySelector('#cart-dialog'));
