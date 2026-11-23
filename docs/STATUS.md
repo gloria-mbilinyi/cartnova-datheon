@@ -8,9 +8,9 @@
 - Semantic HTML, responsive CSS, browser JavaScript entry point, and local icon added.
 - Dependency-free local preview, source checks, HTTP tests, and static build added.
 
-## Required input
+## Requirements received
 
-The CartNova Task 4 master requirements and milestone plan are absent from the available chat and attachments. They have been requested before implementing features or declaring milestones complete.
+The complete CartNova Task 4 brief was supplied after initialization. Implementation follows its 30 suggested milestones, from semantic structure and API integration through cart behavior, checkout, accessibility, automated testing, and production verification.
 
 ## Pending
 

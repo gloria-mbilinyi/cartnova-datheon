@@ -1,30 +1,41 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="CartNova — a new shopping experience taking shape.">
-    <meta name="theme-color" content="#2155e8">
-    <title>CartNova</title>
-    <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="./css/styles.css">
-    <script type="module" src="./js/app.js"></script>
-  </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <a class="brand" href="./" aria-label="CartNova home">
-        <img src="./assets/icons/favicon.svg" width="40" height="40" alt="">
-        <span>CartNova</span>
-      </a>
-    </header>
-    <main id="main" tabindex="-1">
-      <section class="welcome" aria-labelledby="welcome-title">
-        <p class="eyebrow">Welcome to CartNova</p>
-        <h1 id="welcome-title">Something fresh<br>is taking shape.</h1>
-        <p class="intro">A new shopping experience is on its way.</p>
-      </section>
-    </main>
-    <footer class="site-footer"><p>CartNova · Datheon Internship Task 4</p></footer>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Discover more. Shop smarter. Explore CartNova's live product catalog and try a clearly simulated shopping experience.">
+  <meta name="theme-color" content="#5b3bd1">
+  <title>CartNova — Discover more. Shop smarter.</title>
+  <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./css/styles.css">
+  <script type="module" src="./js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#catalog">Skip to products</a>
+  <div class="announcement">A little curiosity. A great discovery. <span>Demo storefront · USD</span></div>
+  <header class="site-header">
+    <div class="header-main container">
+      <a class="brand" href="./" aria-label="CartNova home"><img src="./assets/icons/favicon.svg" width="38" height="38" alt=""><span>Cart<span class="brand-accent">Nova</span></span></a>
+      <form id="search-form" class="search-form" role="search"><label class="sr-only" for="search">Search products</label><span class="search-symbol" aria-hidden="true">⌕</span><input id="search" type="search" placeholder="What are you looking for?" autocomplete="off" maxlength="150"><button type="submit" class="search-submit">Search</button></form>
+      <div class="header-actions"><button id="theme-toggle" class="icon-button" aria-label="Switch to dark theme" aria-pressed="false"><span aria-hidden="true">◐</span></button><button id="open-cart" class="cart-button" aria-haspopup="dialog" aria-controls="cart-dialog"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 7h14l1 14H4L5 7Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg><span class="cart-label">My bag</span><span id="cart-count" class="cart-count">0</span><span class="sr-only">items in cart</span></button></div>
+    </div>
+    <nav class="category-nav container" aria-label="Product categories"><button data-category="all" aria-pressed="true">All discoveries</button><button data-category="electronics" aria-pressed="false">Electronics</button><button data-category="jewelery" aria-pressed="false">Jewelry</button><button data-category="clothing" aria-pressed="false">Clothing</button><span class="nav-note">Discover more. Shop smarter.</span></nav>
+  </header>
+  <main>
+    <section class="hero container" aria-labelledby="hero-title"><div class="hero-copy"><p class="eyebrow"><span aria-hidden="true">✦</span> A world of good finds</p><h1 id="hero-title">Your next favorite.<br><span>One discovery away.</span></h1><p>From everyday essentials to something a little unexpected. Find the pieces that feel like you.</p><a class="button primary" href="#catalog">Explore the collection</a><p class="hero-note">Thoughtful browsing. Simple shopping.</p></div><div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-bag"><svg viewBox="0 0 120 140" fill="none"><path d="M23 43h74l8 83H15l8-83Z" fill="currentColor"/><path d="M40 48V31a20 20 0 0 1 40 0v17" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><path d="m43 83 12 12 23-27" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="floating-label label-top">Find your everyday favorites</span><span class="floating-label label-bottom">A little more you. ✦</span></div></section>
+    <div class="benefits container"><span><b aria-hidden="true">◇</b> Free demo shipping on $100+</span><span><b aria-hidden="true">✧</b> Ratings from FakeStoreAPI</span><span><b aria-hidden="true">▣</b> A simple, persistent shopping bag</span></div>
+    <section id="catalog" class="catalog-section container" aria-labelledby="catalog-title" tabindex="-1">
+      <div class="section-heading"><div><p class="eyebrow">The good-find edit</p><h2 id="catalog-title">Find your next favorite</h2><p>Explore electronics, jewelry, and everyday style.</p></div><span id="catalog-count" class="catalog-count" aria-live="polite">Loading collection…</span></div>
+      <div class="catalog-toolbar"><button id="filters-toggle" class="button subtle mobile-filter" aria-expanded="false" aria-controls="category-filters">Categories</button><div id="category-filters" class="filter-chips" role="group" aria-label="Filter products by category"><button data-category="all" aria-pressed="true">All</button><button data-category="electronics" aria-pressed="false">Electronics</button><button data-category="jewelery" aria-pressed="false">Jewelry</button><button data-category="clothing" aria-pressed="false">Clothing</button><button data-category="men's clothing" aria-pressed="false">Men's</button><button data-category="women's clothing" aria-pressed="false">Women's</button></div><div class="sort-field"><label for="sort">Sort by</label><select id="sort"><option value="default">Featured order</option><option value="price-asc">Price: Low to High</option><option value="price-desc">Price: High to Low</option><option value="rating">Rating: High to Low</option><option value="name">Name: A to Z</option></select></div></div>
+      <p id="filter-summary" class="filter-summary" hidden></p><div id="catalog-message" class="catalog-message" role="status" hidden></div><div id="product-grid" class="product-grid" aria-busy="true"></div><div class="catalog-footnote"><span>Prices and ratings supplied by FakeStoreAPI.</span><span>“Highly rated” means a supplied rating of 4.5/5 or more.</span></div>
+    </section>
+    <section class="closing-note container"><span aria-hidden="true">✦</span><div><h2>Good finds. No pressure.</h2><p>Explore the collection and try the shopping experience. Checkout is a simulation — no payment or real order is processed.</p></div><a href="#catalog">Back to the collection</a></section>
+  </main>
+  <footer class="site-footer container"><div><a class="brand" href="./">Cart<span class="brand-accent">Nova</span></a><p>Discover more. Shop smarter.</p></div><div><p>Built by <a href="https://github.com/gloria-mbilinyi">Gloria Beneth Mbilinyi</a></p><p>DIT · Datheon Internship · Task 4</p></div><div><a href="https://github.com/gloria-mbilinyi/cartnova-datheon">Source on GitHub</a><a href="https://www.linkedin.com/in/gloria-mbilinyi/">LinkedIn</a><p>Demo storefront · No real purchases</p></div></footer>
+  <div id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div><div id="toast" class="toast" role="status" hidden></div>
+  <dialog id="product-dialog" class="modal product-modal" aria-labelledby="product-dialog-title"><button class="close-button" data-close aria-label="Close product details">×</button><div id="product-detail"></div></dialog>
+  <dialog id="cart-dialog" class="cart-drawer" aria-labelledby="cart-title"><div class="drawer-header"><div><p class="eyebrow">Your good finds</p><h2 id="cart-title">Shopping bag</h2></div><button class="close-button" data-close aria-label="Close shopping bag">×</button></div><p id="storage-notice" class="notice" hidden></p><div id="cart-items" class="cart-items"></div><div id="cart-summary" class="drawer-summary"></div></dialog>
+  <dialog id="checkout-dialog" class="modal checkout-modal" aria-labelledby="checkout-title"><button class="close-button" data-close aria-label="Close checkout">×</button><p class="eyebrow">One last look</p><h2 id="checkout-title">Demo checkout</h2><p class="notice">Demo checkout only — no payment or real order is processed. Your details stay in this browser tab and are not saved.</p><div id="checkout-summary"></div><form id="checkout-form" novalidate><div class="field"><label for="customer-name">Customer name</label><input id="customer-name" name="name" autocomplete="name" required maxlength="100" aria-describedby="name-error"><p id="name-error" class="field-error"></p></div><div class="field"><label for="customer-email">Email address</label><input id="customer-email" name="email" type="email" autocomplete="email" required maxlength="254" aria-describedby="email-error"><p id="email-error" class="field-error"></p></div><div class="field"><label for="customer-address">Shipping address</label><textarea id="customer-address" name="address" autocomplete="street-address" required minlength="8" maxlength="500" rows="3" aria-describedby="address-error"></textarea><p id="address-error" class="field-error"></p></div><p id="checkout-error" class="field-error" role="alert"></p><button class="button primary full-width" type="submit">Confirm demo order</button><p class="form-note">No card details. No payment. No external submission.</p></form></dialog>
+  <dialog id="confirmation-dialog" class="modal confirmation-modal" aria-labelledby="confirmation-title"><button class="close-button" data-close aria-label="Close confirmation">×</button><span class="confirmation-icon" aria-hidden="true">✓</span><p class="eyebrow">Simulation complete</p><h2 id="confirmation-title">Thanks for exploring!</h2><p>Your demo checkout is complete. No payment was taken and no real order was placed.</p><p id="order-reference" class="order-reference"></p><p id="order-total"></p><button class="button primary" data-close>Continue discovering</button></dialog>
+</body>
 </html>

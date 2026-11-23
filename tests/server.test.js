@@ -28,7 +28,7 @@ function get(path, method = 'GET') {
 test('serves the application and referenced public assets with their media types', async () => {
   const page = await get('/');
   assert.equal(page.status, 200);
-  assert.match(page.body, /<title>CartNova<\/title>/);
+  assert.match(page.body, /<title>CartNova — Discover more\. Shop smarter\.<\/title>/);
   assert.match(page.headers['content-type'], /text\/html/);
   for (const [path, type] of [['/css/styles.css', 'text/css'], ['/js/app.js', 'text/javascript'], ['/assets/icons/favicon.svg', 'image/svg+xml']]) {
     const response = await get(path);
