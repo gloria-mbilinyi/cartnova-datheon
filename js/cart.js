@@ -9,3 +9,9 @@ export const cartCount = items => items.reduce((total, item) => total + item.qua
 export function removeFromCart(items, productId) {
   return items.filter(item => item.productId !== productId);
 }
+/** Quantity zero explicitly removes the item; all other values must be 1–99. */
+export function updateQuantity(items, productId, quantity) {
+  if (!Number.isSafeInteger(quantity) || quantity < 0 || quantity > MAX_QUANTITY) throw new RangeError('Quantity must be a whole number from 0 to 99.');
+  if (quantity === 0) return removeFromCart(items, productId);
+  return items.map(item => item.productId === productId ? { ...item, quantity } : item);
+}
