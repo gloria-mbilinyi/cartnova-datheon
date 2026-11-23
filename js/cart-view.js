@@ -1,6 +1,7 @@
 import { button, el, money, productImage } from './utils.js';
 import { MAX_QUANTITY } from './cart.js';
-import { calculateSubtotal } from './calculations.js';
+import { calculateTotal } from './calculations.js';
+import { totalsView } from './totals-view.js';
 export function renderCart(state, handlers) {
   const activeId = document.activeElement?.id;
   const container = document.querySelector('#cart-items');
@@ -47,9 +48,7 @@ export function renderCart(state, handlers) {
   }
   container.append(el('p', 'form-note', 'Maximum 99 per item. At quantity 1, − removes the item.'));
   if (state.status === 'ready') {
-    const total = el('div', 'totals-row');
-    total.append(el('span', '', 'Subtotal'), el('strong', '', money(calculateSubtotal(state.cart, state.products))));
-    summary.append(total);
+    summary.append(totalsView(calculateTotal(state.cart, state.products)));
   }
   summary.append(el('p', 'form-note', state.status === 'ready' ? 'Demo totals use current FakeStoreAPI prices.' : 'Current prices are unavailable. Checkout is disabled until the catalog is verified.'));
   if (activeId && document.querySelector('#cart-dialog').open) (document.getElementById(activeId) || document.querySelector('#cart-dialog .close-button')).focus();
