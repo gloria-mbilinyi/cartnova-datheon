@@ -1,3 +1,4 @@
+import { normalizeProducts } from './products.js';
 export const PRODUCTS_URL = 'https://fakestoreapi.com/products';
 
 export class CatalogError extends Error {
@@ -14,11 +15,14 @@ export async function fetchProducts({ fetchImpl = globalThis.fetch, timeoutMs = 
       cache: 'no-store',
     });
     if (!response.ok) throw new CatalogError(`The product service returned HTTP ${response.status}. Please try again.`, 'http');
-    try { return await response.json(); }
+    let payload;
+    try { payload = await response.json(); }
     catch (error) {
       if (controller.signal.aborted) throw error;
       throw new CatalogError('The product service sent an unreadable response. Please try again.', 'response');
     }
+    try { return normalizeProducts(payload); }
+    catch { throw new CatalogError('The product service sent invalid product data. Please try again.', 'schema'); }
   } catch (error) {
     if (error instanceof CatalogError) throw error;
     if (controller.signal.aborted) throw new CatalogError('The product service took too long to respond. Please try again.', 'timeout');
