@@ -17,6 +17,9 @@ test('rejects HTTP failures and malformed JSON with friendly errors', async () =
 test('handles network failures', async () => {
   await assert.rejects(fetchProducts({ fetchImpl: async () => { throw new TypeError('offline'); } }), /could not reach/);
 });
+test('rejects invalid product responses instead of inventing a fallback catalog', async () => {
+  await assert.rejects(fetchProducts({ fetchImpl: async () => ({ ok: true, json: async () => ({ products: [] }) }) }), /invalid product data/);
+});
 test('aborts requests that exceed the time limit', async () => {
   await assert.rejects(fetchProducts({ timeoutMs: 5, fetchImpl: (_, { signal }) => new Promise((_, reject) => signal.addEventListener('abort', () => reject(new Error('aborted')))) }), /too long/);
 });

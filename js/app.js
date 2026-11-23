@@ -6,7 +6,7 @@ import { renderCart } from './cart-view.js';
 import { renderCheckout, clearCheckoutForm } from './checkout-view.js';
 import { validateCheckout, createDemoOrder } from './checkout.js';
 import { money } from './utils.js';
-import { loadCart, saveCart, reconcileCart } from './cart-storage.js';
+import { loadCart, saveCart, reconcileCart, parseCart, CART_KEY } from './cart-storage.js';
 import { showProductDetails } from './details.js';
 import { createStore, visibleProducts } from './state.js';
 
@@ -62,16 +62,33 @@ function addProduct(id) {
 export function renderCatalog() {
   const state = store.getState();
   if (state.status !== 'ready') return;
-  renderProducts(visibleProducts(state), { onAdd: addProduct, onDetails: id => showProductDetails(state.products.find(product => product.id === id), addProduct) });
+  const visible = visibleProducts(state);
+  renderProducts(visible, { onAdd: addProduct, onDetails: id => showProductDetails(state.products.find(product => product.id === id), addProduct) });
+  const summary = document.querySelector('#filter-summary');
+  summary.textContent = state.query.trim() ? `Results for “${state.query.trim()}”` : '';
+  summary.hidden = !state.query.trim();
+  if (!visible.length) catalogMessage(state.products.length ? 'No discoveries match yet' : 'The collection is empty', state.products.length ? 'Try a different search or explore another category.' : 'The product service returned no products. Try loading the collection again.', state.products.length ? 'Clear search and filters' : 'Reload collection', state.products.length ? () => store.setState({ query: '', category: 'all' }) : loadCatalog);
 }
 store.subscribe((next, previous) => {
+  document.querySelectorAll('[data-category]').forEach(control => control.setAttribute('aria-pressed', String(control.dataset.category === next.category)));
+  if (document.querySelector('#search').value !== next.query) document.querySelector('#search').value = next.query;
   if (['cart', 'status', 'storageWarning'].some(key => next[key] !== previous[key])) renderCart(next, cartHandlers);
+  if (document.querySelector('#checkout-dialog').open && ['cart', 'status'].some(key => next[key] !== previous[key])) {
+    const available = renderCheckout(next);
+    document.querySelector('#checkout-form button[type=submit]').disabled = !available;
+  }
   if (next.cart !== previous.cart) {
     document.querySelector('#cart-count').textContent = cartCount(next.cart);
     const warning = saveCart(next.cart);
     if (warning) store.setState({ storageWarning: warning });
   }
   if (['products', 'status', 'query', 'category', 'sort'].some(key => next[key] !== previous[key])) renderCatalog();
+});
+window.addEventListener('storage', event => {
+  if (event.key !== CART_KEY && event.key !== null) return;
+  const restored = parseCart(event.key === null ? null : event.newValue);
+  const state = store.getState();
+  store.setState({ cart: state.status === 'ready' ? reconcileCart(restored.items, state.products) : restored.items, storageWarning: restored.warning });
 });
 document.querySelector('#sort').addEventListener('change', event => store.setState({ sort: event.target.value }));
 document.querySelector('#search').addEventListener('input', event => store.setState({ query: event.target.value }));
