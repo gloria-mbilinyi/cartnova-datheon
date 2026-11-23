@@ -1,7 +1,8 @@
 import { fetchProducts } from './api.js';
 import { renderProducts } from './catalog.js';
-import { catalogMessage, loadingGrid, initDialogs, notify } from './ui.js';
-import { addToCart, cartCount, MAX_QUANTITY } from './cart.js';
+import { catalogMessage, loadingGrid, initDialogs, notify, openDialog } from './ui.js';
+import { addToCart, removeFromCart, updateQuantity, cartCount, MAX_QUANTITY } from './cart.js';
+import { renderCart } from './cart-view.js';
 import { loadCart, saveCart, reconcileCart } from './cart-storage.js';
 import { showProductDetails } from './details.js';
 import { createStore, visibleProducts } from './state.js';
@@ -11,6 +12,14 @@ const store = createStore({ cart: savedCart.items, storageWarning: savedCart.war
 document.querySelector('#cart-count').textContent = cartCount(savedCart.items);
 let activeRequest;
 initDialogs();
+const cartHandlers = {
+  onRemove: id => { store.setState({ cart: removeFromCart(store.getState().cart, id) }); notify('Item removed from your bag.'); },
+  onQuantity: (id, quantity) => { store.setState({ cart: updateQuantity(store.getState().cart, id, quantity) }); notify(quantity ? 'Bag quantity updated.' : 'Item removed from your bag.'); },
+};
+document.querySelector('#open-cart').addEventListener('click', () => {
+  renderCart(store.getState(), cartHandlers);
+  openDialog(document.querySelector('#cart-dialog'));
+});
 function addProduct(id) {
   const state = store.getState();
   if (state.status !== 'ready') return notify('Wait for current product prices before adding items.');
@@ -24,6 +33,7 @@ export function renderCatalog() {
   renderProducts(visibleProducts(state), { onAdd: addProduct, onDetails: id => showProductDetails(state.products.find(product => product.id === id), addProduct) });
 }
 store.subscribe((next, previous) => {
+  if (['cart', 'status', 'storageWarning'].some(key => next[key] !== previous[key])) renderCart(next, cartHandlers);
   if (next.cart !== previous.cart) {
     document.querySelector('#cart-count').textContent = cartCount(next.cart);
     const warning = saveCart(next.cart);
