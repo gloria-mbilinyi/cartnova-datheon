@@ -1,0 +1,7 @@
+:root[data-theme=dark] { color-scheme:dark; --bg:#171520; --surface:#201d2c; --raised:#2d283d; --ink:#f1eefb; --muted:#b6b0c8; --line:#3d3650; --accent:#b29aff; --accent-hover:#c6b3ff; --tint:#32284d; --hero:#242033; --success:#8bd8ad; --danger:#ff9db1; --shadow:0 16px 60px #0004; }
+[data-theme=dark] .primary,[data-theme=dark] .filter-chips button[aria-pressed=true],[data-theme=dark] .cart-count { color:#211633; }
+[data-theme=dark] .hero-art { background:radial-gradient(circle,#4f3c7f 0,transparent 65%); }
+[data-theme=dark] .hero-bag { color:#ad94fb; }
+[data-theme=dark] .brand img { background:#5b3bd1; border-radius:10px; }
+[data-theme=dark] .product-badge { background:#ece5ff; color:#5133b6; }
+@media(prefers-contrast:more) { :root { --muted:#454052; --line:#7c758a; } :root[data-theme=dark] { --muted:#d6cfdf; --line:#a49ab5; } }

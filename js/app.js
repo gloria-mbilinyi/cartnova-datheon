@@ -6,6 +6,7 @@ import { renderCart } from './cart-view.js';
 import { renderCheckout, clearCheckoutForm } from './checkout-view.js';
 import { validateCheckout, createDemoOrder } from './checkout.js';
 import { money } from './utils.js';
+import { initTheme } from './theme.js';
 import { loadCart, saveCart, reconcileCart, parseCart, CART_KEY } from './cart-storage.js';
 import { showProductDetails } from './details.js';
 import { createStore, visibleProducts } from './state.js';
@@ -15,6 +16,7 @@ const store = createStore({ cart: savedCart.items, storageWarning: savedCart.war
 document.querySelector('#cart-count').textContent = cartCount(savedCart.items);
 let activeRequest;
 initDialogs();
+initTheme();
 const cartHandlers = {
   onCheckout: () => {
     clearCheckoutForm();
