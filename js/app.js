@@ -1,18 +1,27 @@
 import { fetchProducts } from './api.js';
 import { renderProducts } from './catalog.js';
-import { catalogMessage, loadingGrid, initDialogs } from './ui.js';
+import { catalogMessage, loadingGrid, initDialogs, notify } from './ui.js';
+import { addToCart, cartCount, MAX_QUANTITY } from './cart.js';
 import { showProductDetails } from './details.js';
 import { createStore, visibleProducts } from './state.js';
 
 const store = createStore();
 let activeRequest;
 initDialogs();
+function addProduct(id) {
+  const state = store.getState();
+  if (state.status !== 'ready') return notify('Wait for current product prices before adding items.');
+  const atLimit = state.cart.find(item => item.productId === id)?.quantity === MAX_QUANTITY;
+  store.setState({ cart: addToCart(state.cart, id, state.products) });
+  notify(atLimit ? 'Maximum quantity is 99 per item.' : 'Added to your shopping bag.');
+}
 export function renderCatalog() {
   const state = store.getState();
   if (state.status !== 'ready') return;
-  renderProducts(visibleProducts(state), { onDetails: id => showProductDetails(state.products.find(product => product.id === id)) });
+  renderProducts(visibleProducts(state), { onAdd: addProduct, onDetails: id => showProductDetails(state.products.find(product => product.id === id), addProduct) });
 }
 store.subscribe((next, previous) => {
+  if (next.cart !== previous.cart) document.querySelector('#cart-count').textContent = cartCount(next.cart);
   if (['products', 'status', 'query', 'category', 'sort'].some(key => next[key] !== previous[key])) renderCatalog();
 });
 document.querySelector('#sort').addEventListener('change', event => store.setState({ sort: event.target.value }));
