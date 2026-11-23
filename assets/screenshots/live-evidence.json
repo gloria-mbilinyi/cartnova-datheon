@@ -1,0 +1,23 @@
+{
+  "url": "http://127.0.0.1:4373/",
+  "checkedAt": "2026-11-23T06:49:40.851Z",
+  "mocked": false,
+  "apiStatus": 200,
+  "productCount": 20,
+  "firstProductId": 1,
+  "firstProductPrice": "$109.95",
+  "verifiedCartTotal": "$142.83",
+  "widths": [
+    1440,
+    768,
+    390,
+    320
+  ],
+  "persistenceAfterReload": true,
+  "simulatedCheckout": true,
+  "cartCleared": true,
+  "imagesLoaded": true,
+  "runtimeErrors": [],
+  "browser": "157.0.8103.38",
+  "build": null
+}
