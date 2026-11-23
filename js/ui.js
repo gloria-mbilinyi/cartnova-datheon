@@ -1,4 +1,25 @@
 import { button, el } from './utils.js';
+const returnFocus = new WeakMap();
+export function openDialog(dialog) {
+  returnFocus.set(dialog, document.activeElement);
+  document.querySelectorAll('dialog[open]').forEach(open => open.close());
+  dialog.showModal();
+}
+export function initDialogs() {
+  document.querySelectorAll('dialog').forEach(dialog => {
+    dialog.querySelectorAll('[data-close]').forEach(control => control.addEventListener('click', () => dialog.close()));
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const box = dialog.getBoundingClientRect();
+      if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close();
+    });
+    dialog.addEventListener('close', () => requestAnimationFrame(() => {
+      if (document.querySelector('dialog[open]')) return;
+      const trigger = returnFocus.get(dialog);
+      (trigger?.isConnected ? trigger : document.querySelector('#open-cart')).focus();
+    }));
+  });
+}
 let toastTimer;
 export function notify(message) {
   const toast = document.querySelector('#toast');

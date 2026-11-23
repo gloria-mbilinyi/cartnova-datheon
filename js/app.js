@@ -1,6 +1,7 @@
 import { fetchProducts } from './api.js';
 import { renderProducts } from './catalog.js';
-import { catalogMessage, loadingGrid } from './ui.js';
+import { catalogMessage, loadingGrid, initDialogs } from './ui.js';
+import { showProductDetails } from './details.js';
 import { filterCategory } from './filters.js';
 import { searchProducts } from './search.js';
 import { sortProducts } from './sorting.js';
@@ -9,7 +10,8 @@ let products = [];
 let category = 'all';
 let query = '';
 let sort = 'default';
-export function renderCatalog() { renderProducts(sortProducts(searchProducts(filterCategory(products, category), query), sort)); }
+initDialogs();
+export function renderCatalog() { renderProducts(sortProducts(searchProducts(filterCategory(products, category), query), sort), { onDetails: id => showProductDetails(products.find(product => product.id === id)) }); }
 document.querySelector('#sort').addEventListener('change', event => { sort = event.target.value; renderCatalog(); });
 document.querySelector('#search').addEventListener('input', event => { query = event.target.value; renderCatalog(); });
 document.querySelector('#search-form').addEventListener('submit', event => {
