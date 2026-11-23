@@ -18,3 +18,4 @@
 .nav-note { margin-left:auto; color:var(--muted); font-size:.85rem; }
 @media(max-width:900px) { .header-main { gap:1rem; flex-wrap:wrap; padding-block:1.1rem; }.search-form { order:3; max-width:none; flex-basis:100%; }.nav-note { display:none; }.header-actions { margin-left:auto; }.category-nav { gap:1.5rem; justify-content:space-between; } }
 @media(max-width:500px) { .container { width:calc(100% - 32px); }.announcement { padding:.5rem 1rem; font-size:.8rem; }.announcement span { display:none; }.brand { font-size:1.5rem; }.cart-label { display:none; }.header-actions { gap:.3rem; }.category-nav { gap:.7rem; }.category-nav button { font-size:.8rem; }.search-submit { font-size:.8rem; } }
+@media(max-width:350px) { .category-nav { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 .75rem; }.category-nav button { text-align:left; white-space:normal; } }

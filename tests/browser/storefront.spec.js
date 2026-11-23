@@ -224,7 +224,8 @@ for(const width of [1440,768,390,320]) test(`responsive catalog and drawer have 
   await page.setViewportSize({width,height:960}); await visit(page);
   if(width>800) await expect(page.locator('#filters-toggle')).toBeHidden();
   else await expect(page.locator('#filters-toggle')).toBeVisible();
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  const overflow=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,nodes:[...document.querySelectorAll('body *')].filter(node=>node.getBoundingClientRect().right>innerWidth+1&&node.getBoundingClientRect().width>0).slice(0,12).map(node=>({tag:node.tagName,id:node.id,class:node.className?.baseVal??node.className,right:node.getBoundingClientRect().right}))}));
+  expect(overflow.scroll,JSON.stringify(overflow)).toBeLessThanOrEqual(overflow.width);
   await add(page); await openBag(page);
   expect(await bag(page).evaluate(node=>node.scrollWidth<=node.clientWidth)).toBe(true);
   await page.keyboard.press('Escape');
