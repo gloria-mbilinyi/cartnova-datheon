@@ -19,6 +19,7 @@ export function renderCheckout(state) {
 }
 export function clearCheckoutForm() {
   document.querySelector('#checkout-form').reset();
+  document.querySelector('#checkout-form button[type=submit]').disabled = false;
   document.querySelectorAll('#checkout-form input, #checkout-form textarea').forEach(input => input.removeAttribute('aria-invalid'));
   document.querySelectorAll('#checkout-form .field-error').forEach(error => { error.textContent = ''; });
 }

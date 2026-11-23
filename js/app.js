@@ -14,6 +14,7 @@ import { createStore, visibleProducts } from './state.js';
 const savedCart = loadCart();
 const store = createStore({ cart: savedCart.items, storageWarning: savedCart.warning });
 document.querySelector('#cart-count').textContent = cartCount(savedCart.items);
+document.querySelector('#open-cart').setAttribute('aria-label', `Open shopping bag, ${cartCount(savedCart.items)} items`);
 let activeRequest;
 initDialogs();
 initTheme();
@@ -26,6 +27,11 @@ const cartHandlers = {
   onQuantity: (id, quantity) => { store.setState({ cart: updateQuantity(store.getState().cart, id, quantity) }); notify(quantity ? 'Bag quantity updated.' : 'Item removed from your bag.'); },
 };
 document.querySelector('#checkout-dialog').addEventListener('close', clearCheckoutForm);
+document.querySelectorAll('#checkout-form input, #checkout-form textarea').forEach(input => input.addEventListener('input', () => {
+  input.removeAttribute('aria-invalid');
+  document.querySelector(`#${input.name}-error`).textContent = '';
+  document.querySelector('#checkout-error').textContent = '';
+}));
 document.querySelector('#checkout-form').addEventListener('submit', event => {
   event.preventDefault();
   const form = event.currentTarget;
@@ -81,6 +87,7 @@ store.subscribe((next, previous) => {
   }
   if (next.cart !== previous.cart) {
     document.querySelector('#cart-count').textContent = cartCount(next.cart);
+    document.querySelector('#open-cart').setAttribute('aria-label', `Open shopping bag, ${cartCount(next.cart)} items`);
     const warning = saveCart(next.cart);
     if (warning) store.setState({ storageWarning: warning });
   }

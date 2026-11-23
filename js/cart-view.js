@@ -16,6 +16,7 @@ export function renderCart(state, handlers) {
     empty.append(el('span', 'empty-bag-icon', '◇'), el('h3', '', 'Room for a good find'), el('p', '', 'Your shopping bag is empty. Explore the collection and find something you love.'), button('Continue discovering', 'button primary', () => document.querySelector('#cart-dialog').close()));
     container.append(empty);
     summary.append(totalsView(calculateTotal([], state.products)));
+    if (activeId && document.querySelector('#cart-dialog').open) document.querySelector('#cart-dialog .close-button').focus();
     return;
   }
   for (const item of state.cart) {

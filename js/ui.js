@@ -16,7 +16,8 @@ export function initDialogs() {
     dialog.addEventListener('close', () => requestAnimationFrame(() => {
       if (document.querySelector('dialog[open]')) return;
       const trigger = returnFocus.get(dialog);
-      (trigger?.isConnected ? trigger : document.querySelector('#open-cart')).focus();
+      const usable = trigger?.isConnected && !trigger.closest('dialog:not([open])');
+      (usable ? trigger : document.querySelector('#open-cart')).focus();
     }));
   });
 }
