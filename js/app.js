@@ -3,11 +3,14 @@ import { renderProducts } from './catalog.js';
 import { catalogMessage, loadingGrid } from './ui.js';
 import { filterCategory } from './filters.js';
 import { searchProducts } from './search.js';
+import { sortProducts } from './sorting.js';
 
 let products = [];
 let category = 'all';
 let query = '';
-export function renderCatalog() { renderProducts(searchProducts(filterCategory(products, category), query)); }
+let sort = 'default';
+export function renderCatalog() { renderProducts(sortProducts(searchProducts(filterCategory(products, category), query), sort)); }
+document.querySelector('#sort').addEventListener('change', event => { sort = event.target.value; renderCatalog(); });
 document.querySelector('#search').addEventListener('input', event => { query = event.target.value; renderCatalog(); });
 document.querySelector('#search-form').addEventListener('submit', event => {
   event.preventDefault();
