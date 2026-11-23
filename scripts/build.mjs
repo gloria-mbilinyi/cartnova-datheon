@@ -1,4 +1,5 @@
-import { cp, mkdtemp, rename, rm } from 'node:fs/promises';
+import { cp, mkdtemp, rename, rm, writeFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 import { isAbsolute, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PUBLIC_PATHS } from './public-files.mjs';
@@ -12,6 +13,13 @@ for (const path of [destination, temporary]) {
 }
 try {
   for (const path of PUBLIC_PATHS) await cp(join(root, path), join(temporary, path), { recursive: true });
+  let commit = process.env.GITHUB_SHA;
+  if (!commit) {
+    try { commit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd:root, encoding:'utf8', stdio:['ignore','pipe','ignore'] }).trim(); }
+    catch { commit = 'unversioned-source'; }
+  }
+  await writeFile(join(temporary, 'build-info.json'), JSON.stringify({ commit, builtAt:new Date().toISOString() }, null, 2));
+  await writeFile(join(temporary, '.nojekyll'), '');
   await rm(destination, { recursive: true, force: true });
   await rename(temporary, destination);
   console.log('Built public application files in dist/.');
