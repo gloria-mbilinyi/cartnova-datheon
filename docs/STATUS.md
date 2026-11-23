@@ -1,6 +1,6 @@
 # CartNova implementation and verification
 
-The application is implemented. Local source checks, **39 unit/HTTP tests**, and **31 Playwright tests** passed. A separate unmocked browser run fetched **20 FakeStoreAPI products with HTTP 200**, compared live prices and totals, confirmed bag persistence after reload, completed simulated checkout, verified image loading and widths 1440/768/390/320px, and reported zero JavaScript runtime errors.
+The application is implemented and deployed. Local source checks, **40 unit/HTTP tests**, and **31 Playwright tests** passed, as did the complete GitHub Actions verification/deployment workflow. All 31 browser regression tests also passed against production. A separate unmocked production browser run fetched **20 FakeStoreAPI products with HTTP 200**, compared live prices and totals, confirmed bag persistence after reload, completed simulated checkout, verified image loading and widths 1440/768/390/320px, and reported zero JavaScript runtime errors.
 
 Actual screenshots and the live capture record are under [assets/screenshots](../assets/screenshots/). No regression fixtures are used in the production application.
 
@@ -36,12 +36,18 @@ Actual screenshots and the live capture record are under [assets/screenshots](..
 | 26 | Theme preference and responsive polish | Complete |
 | 27 | Keyboard focus, Escape, reduced motion and accessibility | Complete |
 | 28 | Unit and regression tests | Complete |
-| 29 | Browser testing, documentation and actual screenshots | Complete locally |
-| 30 | Verified CI/CD, free deployment and production checks | Pending deployment |
+| 29 | Browser testing, documentation and actual screenshots | Complete |
+| 30 | Verified CI/CD, free deployment and production checks | Complete |
 
 ## Deployment status
 
-The initial GitHub Actions verification succeeded. The complete Pages verification/deployment workflow and actual production verification are the remaining release work. The intended address is `https://gloria-mbilinyi.github.io/cartnova-datheon/`; it has not yet been claimed as a verified deployment in this record.
+**Verified live site:** https://gloria-mbilinyi.github.io/cartnova-datheon/
+
+The [successful release workflow](https://github.com/gloria-mbilinyi/cartnova-datheon/actions/runs/45127295508) verified 40 unit/HTTP tests and 31 browser tests before deploying commit `9bfede7f4fd371b38e79e91b7367909508f1092e`. The separate production check verified that exact commit through `build-info.json` on 2026-11-23 at 06:56 UTC. Its record is [production-evidence.json](production-evidence.json).
+
+That live run compared the first product's $109.95 price and a two-product bag totaling $142.83, then completed the checkout simulation and verified cart clearing. A separate deterministic regression run against the HTTPS site passed 31/31 tests. Additional documentation/screenshot changes are verified by subsequent workflow runs linked from the repository Actions page.
+
+CI initially blocked a 320px overflow on Linux. Narrow navigation was corrected and the complete rerun passed; no failed verification was allowed to deploy.
 
 ## Boundaries
 

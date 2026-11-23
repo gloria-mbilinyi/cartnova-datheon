@@ -1,0 +1,26 @@
+{
+  "url": "https://gloria-mbilinyi.github.io/cartnova-datheon/",
+  "checkedAt": "2026-11-23T06:56:38.187Z",
+  "mocked": false,
+  "apiStatus": 200,
+  "productCount": 20,
+  "firstProductId": 1,
+  "firstProductPrice": "$109.95",
+  "verifiedCartTotal": "$142.83",
+  "widths": [
+    1440,
+    768,
+    390,
+    320
+  ],
+  "persistenceAfterReload": true,
+  "simulatedCheckout": true,
+  "cartCleared": true,
+  "imagesLoaded": true,
+  "runtimeErrors": [],
+  "browser": "157.0.8103.38",
+  "build": {
+    "commit": "9bfede7f4fd371b38e79e91b7367909508f1092e",
+    "builtAt": "2026-11-23T06:55:19.477Z"
+  }
+}

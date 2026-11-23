@@ -8,7 +8,7 @@ Built by **Gloria Beneth Mbilinyi**, Dar es Salaam Institute of Technology (DIT)
 
 [GitHub repository](https://github.com/gloria-mbilinyi/cartnova-datheon) · [GitHub Actions](https://github.com/gloria-mbilinyi/cartnova-datheon/actions) · [GitHub Pages address](https://gloria-mbilinyi.github.io/cartnova-datheon/)
 
-Deployment verification and milestone status are recorded in [docs/STATUS.md](docs/STATUS.md).
+The HTTPS deployment is verified. Production evidence and milestone status are recorded in [docs/STATUS.md](docs/STATUS.md).
 
 ## Overview and problem
 
@@ -139,9 +139,9 @@ These are captures of CartNova running with real FakeStoreAPI responses, not moc
 
 ## Testing evidence
 
-Local execution passed **39 unit/HTTP tests** and **31 Playwright tests**. Coverage includes response validation, search/filter/sort composition, cart operations, storage failures, monetary boundaries, checkout, literal rendering of hostile markup, keyboard focus, image fallback, and responsive widths **1440/768/390/320px**. Automated axe checks cover the light storefront, cart, checkout, and dark storefront. Automated accessibility checks supplement manual keyboard checks; they are not a complete accessibility certification.
+Local execution and CI passed **40 unit/HTTP tests** and **31 Playwright tests**. All 31 browser tests also passed against the deployed HTTPS application. Coverage includes response validation, search/filter/sort composition, cart operations, storage failures, monetary boundaries, checkout, literal rendering of hostile markup, keyboard focus, image fallback, release-file exclusions, and responsive widths **1440/768/390/320px**. Automated axe checks cover the light storefront, cart, checkout, and dark storefront. Automated accessibility checks supplement manual keyboard checks; they are not a complete accessibility certification.
 
-The separate live-browser check fetched **20 products with HTTP 200**, verified a displayed current price and cart total, reloaded a persistent bag, completed the demo checkout, checked all four widths, and found no JavaScript runtime errors. Evidence is in [the screenshot capture record](assets/screenshots/live-evidence.json). See [status](docs/STATUS.md) for production verification.
+The separate live-browser checks fetched **20 products with HTTP 200**, verified a displayed current price and cart total, reloaded a persistent bag, completed the demo checkout, checked all four widths, and found no JavaScript runtime errors. Evidence is in [the screenshot capture record](assets/screenshots/live-evidence.json) and the [unmocked production record](docs/production-evidence.json), including the exact served commit. See [status](docs/STATUS.md) for production verification.
 
 ## CI/CD and free hosting
 
